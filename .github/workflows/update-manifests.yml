@@ -9,8 +9,8 @@ on:
         type: string
 
 env:
-  BACKEND_IMAGE: trainwithshubham/devboard-backend
-  FRONTEND_IMAGE: trainwithshubham/devboard-frontend
+  BACKEND_IMAGE: prakashmahajan123/devboard-backend
+  FRONTEND_IMAGE: prakashmahajan123/devboard-frontend
 
 jobs:
   update-manifests:

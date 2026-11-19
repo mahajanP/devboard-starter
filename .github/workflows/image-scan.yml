@@ -12,8 +12,8 @@ permissions:
   security-events: write
 
 env:
-  BACKEND_IMAGE: trainwithshubham/devboard-backend
-  FRONTEND_IMAGE: trainwithshubham/devboard-frontend
+  BACKEND_IMAGE: prakashmahajan123/devboard-backend
+  FRONTEND_IMAGE: prakashmahajan123/devboard-frontend
 
 jobs:
   trivy:
@@ -23,9 +23,9 @@ jobs:
       matrix:
         include:
           - name: backend
-            image: trainwithshubham/devboard-backend
+            image: prakashmahajan123/devboard-backend
           - name: frontend
-            image: trainwithshubham/devboard-frontend
+            image: prakashmahajan123/devboard-frontend
     steps:
       - name: Checkout
         uses: actions/checkout@v4

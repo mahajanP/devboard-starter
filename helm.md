@@ -188,7 +188,7 @@ appVersion: "1.0.0"
 namespace: devboard-ns
 
 frontend:
-  image: trainwithshubham/devboard-frontend:latest
+  image: prakashmahajan123/devboard-frontend:latest
   replicas: 1
   containerPort: 4173
   service:
@@ -204,7 +204,7 @@ frontend:
       memory: 128Mi
 
 backend:
-  image: trainwithshubham/devboard-backend:latest
+  image: prakashmahajan123/devboard-backend:latest
   replicas: 1
   containerPort: 8080
   service:
@@ -535,7 +535,7 @@ and the backend Deployment's env resolution (`configMapKeyRef`/
 `secretKeyRef`/`$(POSTGRES_USER)` interpolation) were confirmed structurally
 correct against the live API server.
 
-> **Known gap, not a chart bug:** `trainwithshubham/devboard-frontend` and
+> **Known gap, not a chart bug:** `prakashmahajan123/devboard-frontend` and
 > `devboard-backend` are currently published as **amd64-only** images (no
 > arm64 manifest). On an Apple Silicon Mac, a local kind cluster runs
 > arm64 nodes, so pulling either image fails with `no match for platform
