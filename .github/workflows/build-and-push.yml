@@ -41,6 +41,8 @@ jobs:
           tags: |
             ${{ env.BACKEND_IMAGE }}:${{ steps.tag.outputs.tag }}
             ${{ env.BACKEND_IMAGE }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Build and push frontend image
         uses: docker/build-push-action@v6
@@ -50,3 +52,5 @@ jobs:
           tags: |
             ${{ env.FRONTEND_IMAGE }}:${{ steps.tag.outputs.tag }}
             ${{ env.FRONTEND_IMAGE }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

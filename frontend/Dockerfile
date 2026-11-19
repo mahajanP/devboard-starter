@@ -1,34 +1,34 @@
 # Stage 1 — build the app
-FROM dhi.io/node:26-dev AS build
+FROM node:20-alpine AS build
 
 WORKDIR /app
 
 COPY package*.json ./
-
-RUN npm install --legacy-peer-deps
-
-# Install vite explicitly if not already in package.json
-RUN npm list vite > /dev/null 2>&1 || npm install --no-save vite@5.4.11
+RUN npm ci --legacy-peer-deps
 
 COPY . .
-
 RUN npm run build
 
-# Stage 2 — distroless runtime (minimal, secure)
-FROM dhi.io/node:26
+# Stage 2 — production runtime using lightweight alpine + nonroot user
+FROM node:20-alpine
+
+RUN apk add --no-cache wget && \
+    addgroup -g 1001 -S appgroup && \
+    adduser -u 1001 -S appuser -G appgroup
 
 WORKDIR /app
 
-# Copy built files from builder
-COPY --from=build /app/dist ./dist
+COPY --from=build --chown=appuser:appgroup /app/dist ./dist
+COPY --from=build --chown=appuser:appgroup /app/node_modules ./node_modules
+COPY --from=build --chown=appuser:appgroup /app/package.json ./package.json
+COPY --chown=appuser:appgroup vite.preview.config.js ./vite.config.js
 
-# Copy all node_modules from builder (includes vite)
-COPY --from=build /app/node_modules ./node_modules
-
-COPY vite.preview.config.js ./vite.config.js
+USER appuser
 
 EXPOSE 4173
 
-# Use exec form for proper signal handling
+HEALTHCHECK --interval=15s --timeout=3s --start-period=10s --retries=3 \
+    CMD wget --no-verbose --tries=1 http://localhost:4173/ || exit 1
+
 ENTRYPOINT ["node", "--no-warnings"]
 CMD ["./node_modules/.bin/vite", "preview", "--host", "0.0.0.0", "--port", "4173"]

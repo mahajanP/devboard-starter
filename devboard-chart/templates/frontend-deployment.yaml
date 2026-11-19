@@ -22,3 +22,15 @@ spec:
             - containerPort: {{ .Values.frontend.containerPort }}
           resources:
 {{ toYaml .Values.frontend.resources | indent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.frontend.containerPort }}
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.frontend.containerPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
